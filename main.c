@@ -29,16 +29,30 @@ int main()
   return 0 ;
 }
 
-void DisplayElapsedTime(void){
-  DWORD32 time;
+void DisplayElapsedTime()
+{
+  unsigned old_timer, timer, hours, mins, secs;
 
-  for (;;){
-    time = Milliseconds();
-    PutUnsigned(time, 10, 8);
-    PutString("\n");
-    while(time < Milliseconds()+1000){
+  old_timer = 0;
+
+  while (1) {
+    timer = Milliseconds()/1000;
+
+    hours = timer / (3600);
+    mins = (timer / 60) % 60;
+    secs = timer % 60;
+
+    SetCursorPosition(0, 72);
+    PutUnsigned(hours, 10, 2);
+    PutString(":");
+    PutUnsigned(mins, 10, 2);
+    PutString(":");
+    PutUnsigned(secs, 10, 2);
+
+    if (timer - old_timer < 1) {
       MtCYield();
     }
+    old_timer = timer;
   }
 }
 
