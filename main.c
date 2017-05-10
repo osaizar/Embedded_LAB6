@@ -49,8 +49,9 @@ void DisplayElapsedTime()
     PutString(":");
     PutUnsigned(secs, 10, 2);
 
-    if (timer - old_timer < 1) {
+    while (timer - old_timer < 1) {
       MtCYield();
+      timer = Milliseconds()/1000;
     }
     old_timer = timer;
   }
